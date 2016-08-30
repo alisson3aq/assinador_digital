@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.assinador</groupId>
+	<artifactId>assinador_jws</artifactId>
+	<version>1.0.0</version>
+	<name>Assinador Digital (GUI)</name>
+	<description>Agente Java Web Start do assinador de documentos</description>
+
+	<properties>
+		<signed.jar.dir>${project.build.directory}/signed</signed.jar.dir>
+		<signed.jar.file>${project.artifactId}-${project.version}.jar</signed.jar.file>
+		<main.class>br.com.assinador.agente.gui.Run</main.class>
+		<dependencies.dir>${project.build.directory}/lib</dependencies.dir>
+		<key.store>${basedir}/cert_sign/assinador.jks</key.store>
+		<key.storepass>assinador</key.storepass>
+		<key.alias>assinador</key.alias>
+		<key.pass>assinador</key.pass>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcmail-jdk15on</artifactId>
+			<version>1.54</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo.webstart</groupId>
+				<artifactId>webstart-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- bind to phase, I prefer to call it manualls -->
+						<phase>package</phase>
+						<goals>
+							<goal>jnlp-inline</goal> <!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludeTransitive>false</excludeTransitive>
+					<!-- <libPath>lib</libPath> -->
+					<outputJarVersions>true</outputJarVersions>
+					<jnlp>
+						<inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
+						<inputTemplate>src/main/resources/assinador.jnlp_template</inputTemplate>
+						<outputFile>assinador.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+						<mainClass>${main.class}</mainClass>
+					</jnlp>
+
+					<!-- SIGNING -->
+					<sign>
+						<keystore>${key.store}</keystore>
+						<keypass>${key.pass}</keypass>
+						<storepass>${key.pass}</storepass>
+						<alias>${key.alias}</alias>
+
+						<!--validity>fillme</validity -->
+
+						<verify>true</verify>
+
+						<keystoreConfig>
+							<delete>false</delete>
+							<gen>false</gen>
+						</keystoreConfig>
+					</sign>
+
+					<!-- BUILDING PROCESS -->
+					<outputJarVersions>false</outputJarVersions>
+					<verbose>false</verbose>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

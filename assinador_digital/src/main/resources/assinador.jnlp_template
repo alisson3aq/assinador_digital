@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="6.0+" codebase="http://10.114.1.123:8080/jnlp-web/" href="assinador.jnlp">
+	<information>
+		
+		<title>Assinador Digital</title>
+		<vendor>Quality Software</vendor>
+		<homepage href="http://www.quality.com.br/" />
+		<description>Assinador digital de documentos (P7S)</description>
+		
+		<icon href="quality-logo.png" kind="splash"/>
+		
+		<offline-allowed />
+		
+		<shortcut online="true" install="true">  
+	        <desktop/>  
+	        <menu submenu="Assinador digital"/>  
+	    </shortcut> 
+	    
+	</information>
+	
+	<security>
+		<all-permissions />
+	</security>
+	
+	<resources>
+		<j2se version="1.7+" href="http://java.sun.com/products/autodl/j2se" java-vm-args="-Xms64m -client" />
+		$dependencies
+	</resources>
+	
+	<application-desc main-class="br.com.assinador.agente.gui.Run" />
+	<update check="background" policy="prompt-update"/>
+</jnlp>
