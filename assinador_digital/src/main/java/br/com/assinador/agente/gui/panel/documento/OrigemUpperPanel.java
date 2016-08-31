@@ -27,8 +27,6 @@ class OrigemUpperPanel extends JPanel {
 		JSeparator separator = new JSeparator();
 		JLabel lblDocumentos = new JLabel("Documentos assinados");
 		JScrollPane scrollPane = new JScrollPane();
-		JLabel iconQuality = new JLabel("");
-		JLabel iconCRI = new JLabel("");
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setIcon(new ImageIcon(OrigemUpperPanel.class.getResource("/br/com/assinador/agente/gui/icon/file_icon.png")));
@@ -39,23 +37,19 @@ class OrigemUpperPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(iconCRI, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-						.addComponent(iconQuality, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(104)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblDocumentos, GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
+						.addComponent(lblDocumentos, GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(separator, GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+							.addComponent(separator, GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnAdicionar)
-							.addPreferredGap(ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
 							.addComponent(btnRemover)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
 							.addContainerGap())))
 		);
 		groupLayout.setVerticalGroup(
@@ -66,12 +60,7 @@ class OrigemUpperPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(iconQuality, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(iconCRI, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnRemover, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

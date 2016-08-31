@@ -16,7 +16,7 @@ public class Logger {
 
 	private static final File tempDir = new File(System.getProperty("java.io.tmpdir"));
 	private static final String LINE_BREAK = "\n";
-	private static final String LOG_DIR = "quality/assinador/log";
+	private static final String LOG_DIR = "assinador_figital" + File.separator + "log";
 	private static final Object LOCK = new Object();
 	
 	private long maxFileSize = (long) Math.pow(1000.0, 2);
