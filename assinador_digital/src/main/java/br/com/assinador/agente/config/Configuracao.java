@@ -8,15 +8,29 @@ import java.util.Set;
 
 import javax.swing.UIManager;
 
+import br.com.assinador.agente.gui.panel.conf.converter.AparenciaConverter;
 import br.com.assinador.agente.io.FileExtension;
+import br.com.mvp.view.ModelCollector;
+import br.com.mvp.view.annotation.Combo;
+import br.com.mvp.view.annotation.Model;
+import br.com.mvp.view.annotation.Text;
+import br.com.mvp.view.annotation.ViewList;
 
+@Model
 public class Configuracao implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Text(fieldName="txtDiretorioPadraoDocs")
 	private String diretorioDocumentosPreferido;
+	
+	@Text(fieldName="txtDiretorioPadraoDocsAssinados")
 	private String diretorioDocumentosAssinadosPreferido;
+	
+	@Combo(fieldName="lookAndFeelInfoComboBox", converter=AparenciaConverter.class)
 	private String aparenciaPreferida;
+	
+	@ViewList(fieldName="jListTiposArquivos", collectionType=ModelCollector.VALUES)
 	private Set<String> tiposConhecidos = new LinkedHashSet<>();
 	
 	public Configuracao(){

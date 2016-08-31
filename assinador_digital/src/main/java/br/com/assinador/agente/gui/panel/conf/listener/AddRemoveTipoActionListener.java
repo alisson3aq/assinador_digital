@@ -5,17 +5,22 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 
+import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.gui.panel.JListUtil;
-import br.com.assinador.agente.gui.panel.conf.PreferenciasComponentsVO;
+import br.com.assinador.agente.gui.panel.conf.PreferenciasPanel;
 import br.com.assinador.agente.gui.popup.NovoTipoArquivoConhecidoPopup;
+import br.com.mvp.Controller;
 
 public class AddRemoveTipoActionListener implements ActionListener {
 
-	private PreferenciasComponentsVO componentsVO;
+	private Controller<PreferenciasPanel, Configuracao> controller;
+	private JList<String> jList;
 	
-	public AddRemoveTipoActionListener(PreferenciasComponentsVO componentsVO) {
-		this.componentsVO = componentsVO;
+	public AddRemoveTipoActionListener(Controller<PreferenciasPanel, Configuracao> controller, JList<String> jList) {
+		this.controller = controller;
+		this.jList = jList;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -28,21 +33,21 @@ public class AddRemoveTipoActionListener implements ActionListener {
 	}
 	
 	public void adicionarTipos(){
-		NovoTipoArquivoConhecidoPopup popup = new NovoTipoArquivoConhecidoPopup(componentsVO.getDialog());
+		NovoTipoArquivoConhecidoPopup popup = new NovoTipoArquivoConhecidoPopup(controller.getView());
 		popup.open();
 		
 		if (popup.isOk()){
 			String tiposDigitados = popup.getTiposDigitados();
 			String[] tipos = tiposDigitados.split("[,\\s+|.,]+");
 			if (tipos.length != 0 && !(tipos.length == 1 && tipos[0].equals(""))){
-				JListUtil<String> listUtil = new JListUtil<>(componentsVO.getjListTiposArquivos());
+				JListUtil<String> listUtil = new JListUtil<>(jList);
 				listUtil.addValues(tipos);
 			}
 		}
 	}
 	
 	public void removerTipos(){
-		JListUtil<String> listUtil = new JListUtil<>(componentsVO.getjListTiposArquivos());
+		JListUtil<String> listUtil = new JListUtil<>(jList);
 		Set<String> selectedElements = listUtil.getSelectedElements();
 		listUtil.removeValues(selectedElements);
 	}

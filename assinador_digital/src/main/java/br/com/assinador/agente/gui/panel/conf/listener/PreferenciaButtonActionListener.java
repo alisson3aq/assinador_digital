@@ -10,47 +10,37 @@ import javax.swing.SwingUtilities;
 import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.LookAndFeelUtil;
-import br.com.assinador.agente.gui.LookAndFeelUtil.WrapperLookAndFeelInfo;
-import br.com.assinador.agente.gui.panel.JListUtil;
-import br.com.assinador.agente.gui.panel.conf.PreferenciasComponentsVO;
+import br.com.assinador.agente.gui.panel.conf.PreferenciasPanel;
+import br.com.mvp.Controller;
 
 public class PreferenciaButtonActionListener implements ActionListener{
 
-	private PreferenciasComponentsVO componentsVO;
+	private Controller<PreferenciasPanel, Configuracao> controller;
 	
-	public PreferenciaButtonActionListener(PreferenciasComponentsVO componentsVO) {
-		this.componentsVO = componentsVO;
+	public PreferenciaButtonActionListener(Controller<PreferenciasPanel, Configuracao> controller) {
+		this.controller = controller;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		final String actionCommand = e.getActionCommand();
 		
 		switch (actionCommand) {
 		case "Cancelar":
-			componentsVO.getDialog().dispose();
+			dispose();
 			break;
 		case "Salvar":
-			componentsVO.getDialog().dispose();
+			dispose();
 		case "Aplicar":
-			atualziarConfiguracoes(componentsVO);
+			atualziarConfiguracoes();
 			aplicarAlteracoes();
 			break;
 		}
 	}
 
-	private void atualziarConfiguracoes(PreferenciasComponentsVO componentsVO) {
-		Configuracao conf = ConfiguracaoManager.getConfiguracao();
-		WrapperLookAndFeelInfo selectedLookAndFell = (WrapperLookAndFeelInfo) componentsVO.getLookAndFeelInfoComboBox().getSelectedItem();
-		
-		conf.setAparenciaPreferida(selectedLookAndFell.getInfo().getClassName());
-		conf.setDiretorioDocumentosPreferido(componentsVO.getTxtPadraoDoc().getText());
-		conf.setDiretorioDocumentosAssinadosPreferido(componentsVO.getTxtPadraoDocAssinado().getText());
-		
-		JListUtil<String> listUtil = new JListUtil<>(componentsVO.getjListTiposArquivos());
-		conf.setTiposConhecidos(listUtil.getValues());
-		
-		ConfiguracaoManager.update();
+	private void atualziarConfiguracoes() {
+		Configuracao conf = controller.getModel();
+		ConfiguracaoManager.update(conf);
 	}
 	
 	private void aplicarAlteracoes() {
@@ -62,6 +52,10 @@ public class PreferenciaButtonActionListener implements ActionListener{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void dispose(){
+		controller.getView().dispose();
 	}
 
 }

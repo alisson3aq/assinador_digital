@@ -16,9 +16,7 @@ public class PreferenciasDialog extends Dialog {
 
 	private final JPanel contentPanel = new JPanel();
 	
-	private PreferenciasComponentsVO componentsVO;
-
-	public PreferenciasDialog(JFrame parent) {
+	public PreferenciasDialog(JFrame parent) throws Exception{
 		super(parent, "Preferências", true);
 		
 		setBounds(100, 100, 479, 351);
@@ -38,15 +36,8 @@ public class PreferenciasDialog extends Dialog {
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
-		this.componentsVO = preferenciasPanel.getComponentsVO();
-		
-		componentsVO.setDialog(this);
-		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(parent);
 		pack();
-	}
-	
-	public PreferenciasComponentsVO getComponentsVO() {
-		return componentsVO;
 	}
 }

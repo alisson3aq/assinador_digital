@@ -11,28 +11,37 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.com.assinador.agente.config.Configuracao;
+import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.LookAndFeelUtil;
 import br.com.assinador.agente.gui.panel.conf.listener.AddRemoveTipoActionListener;
 import br.com.assinador.agente.gui.panel.conf.listener.PreferenciaButtonActionListener;
 import br.com.assinador.agente.gui.panel.conf.listener.SelecionarDiretorioActionListener;
+import br.com.mvp.view.MVPPanel;
+import br.com.mvp.view.annotation.Component;
+import br.com.mvp.view.annotation.View;
 
-public class PreferenciasPanel extends JPanel {
+@View
+public class PreferenciasPanel extends MVPPanel<PreferenciasPanel, Configuracao> {
 	
 	private static final long serialVersionUID = -268594371846496592L;
 	
+	@Component
 	private JTextField txtDiretorioPadraoDocs;
+	@Component
 	private JTextField txtDiretorioPadraoDocsAssinados;
+	@Component
 	private JComboBox<LookAndFeelUtil.WrapperLookAndFeelInfo> lookAndFeelInfoComboBox;
+	@Component
+	private JList<String> jListTiposArquivos;
 	
-	private PreferenciasComponentsVO componentsVO = new PreferenciasComponentsVO();
-
-	public PreferenciasPanel() {
+	public PreferenciasPanel() throws Exception {
+		super(Configuracao.class);
 		
 		JButton btnPastaDocumentos = new JButton("Pasta padrão de documentos");
 		btnPastaDocumentos.setToolTipText("Diretório padrão para a busca de dumentos elegíveis a serem assinados");
@@ -156,7 +165,7 @@ public class PreferenciasPanel extends JPanel {
 					.addContainerGap())
 		);
 		
-		JList<String> jListTiposArquivos = new JList<String>(new DefaultListModel<String>());
+		jListTiposArquivos = new JList<String>(new DefaultListModel<String>());
 		scrollPane.setViewportView(jListTiposArquivos);
 		setLayout(groupLayout);
 
@@ -164,24 +173,16 @@ public class PreferenciasPanel extends JPanel {
 		btnPastaDeDocumentosAssinados.addActionListener(new SelecionarDiretorioActionListener(txtDiretorioPadraoDocsAssinados));
 		
 		new LookAndFeelUtil().fillComboBox(lookAndFeelInfoComboBox);
-		componentsVO.setLookAndFeelInfoComboBox(lookAndFeelInfoComboBox);
-		componentsVO.setTxtPadraoDoc(txtDiretorioPadraoDocs);
-		componentsVO.setTxtPadraoDocAssinado(txtDiretorioPadraoDocsAssinados);
-		componentsVO.setBtnAdicionarTipo(btnAdicionarTipo);
-		componentsVO.setBtnRemoverTipo(btnRemoverTipo);
-		componentsVO.setjListTiposArquivos(jListTiposArquivos);
 		
-		ActionListener preferenciasActionListener = new PreferenciaButtonActionListener(componentsVO);
+		ActionListener preferenciasActionListener = new PreferenciaButtonActionListener(getController());
 		btnSalvar.addActionListener(preferenciasActionListener);
 		btnAplicar.addActionListener(preferenciasActionListener);
 		btnCancelar.addActionListener(preferenciasActionListener);
 
-		AddRemoveTipoActionListener addRemoveAL = new AddRemoveTipoActionListener(componentsVO);
+		AddRemoveTipoActionListener addRemoveAL = new AddRemoveTipoActionListener(getController(), jListTiposArquivos);
 		btnAdicionarTipo.addActionListener(addRemoveAL);
 		btnRemoverTipo.addActionListener(addRemoveAL);
-	}
-	
-	public PreferenciasComponentsVO getComponentsVO() {
-		return componentsVO;
+		
+		loadModel(ConfiguracaoManager.getConfiguracao());
 	}
 }

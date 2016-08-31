@@ -3,6 +3,7 @@ package br.com.assinador.agente.config;
 import java.io.File;
 
 import br.com.assinador.agente.io.FileHandler;
+import br.com.mvp.instrument.reflection.ReflectionUtils;
 
 public class ConfiguracaoManager {
 
@@ -36,8 +37,11 @@ public class ConfiguracaoManager {
 		}
 	}
 
-	public static void update() {
+	public static void update(Configuracao conf) {
 		try{
+			if (configuracao != conf)
+				ReflectionUtils.copyProperties(conf, configuracao);
+			
 			FileHandler fh = new FileHandler();
 			fh.writeToFile(configFileDir, "conf", configuracao);
 		}catch (Exception e) {

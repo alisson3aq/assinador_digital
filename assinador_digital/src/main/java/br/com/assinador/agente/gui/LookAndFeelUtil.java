@@ -1,5 +1,10 @@
 package br.com.assinador.agente.gui;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.swing.JComboBox;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -9,26 +14,36 @@ import br.com.assinador.agente.config.ConfiguracaoManager;
 
 public class LookAndFeelUtil {
 
-	public LookAndFeelInfo[] getInstalledLookAndFeel(){
-		return UIManager.getInstalledLookAndFeels();
+	private static Map<String, LookAndFeelInfo> lfMap = new HashMap<>();
+	static{
+		for (LookAndFeelInfo lfInfo: UIManager.getInstalledLookAndFeels())
+			lfMap.put(lfInfo.getName(), lfInfo);
 	}
 	
-	public WrapperLookAndFeelInfo getInfoByClassName(String className){
+	public Collection<LookAndFeelInfo> getInstalledLookAndFeel(){
+		return lfMap.values();
+	}
+	
+	public WrapperLookAndFeelInfo getWrapperInfoByClassName(String className){
 		for (LookAndFeelInfo lfInfo: getInstalledLookAndFeel())
 			if (lfInfo.getClassName().equals(className))
-				return new WrapperLookAndFeelInfo(lfInfo, lfInfo.getName());
-		
+				return new WrapperLookAndFeelInfo(lfInfo);
 		return null;
 	}
 	
-	public WrapperLookAndFeelInfo[] getWrappedInstalledLookAndFeel(){
-		LookAndFeelInfo[] installedLookAndFeel = getInstalledLookAndFeel();
-		WrapperLookAndFeelInfo[] wfInfo = new WrapperLookAndFeelInfo[installedLookAndFeel.length];
-		
-		for (int i=0; i < installedLookAndFeel.length; i++)
-			wfInfo[i] = new WrapperLookAndFeelInfo(installedLookAndFeel[i], installedLookAndFeel[i].getName());
-		
-		return wfInfo;
+	public WrapperLookAndFeelInfo getWrapperInfoByName(String name){
+		LookAndFeelInfo lookAndFeelInfo = lfMap.get(name);
+		if (lookAndFeelInfo == null)
+			return null;
+		else
+			return new WrapperLookAndFeelInfo(lookAndFeelInfo);
+	}
+	
+	public Collection<WrapperLookAndFeelInfo> getWrappedInstalledLookAndFeel(){
+		return getInstalledLookAndFeel()
+					.stream()
+					.map(lf -> new WrapperLookAndFeelInfo(lf))
+					.collect(Collectors.toList());
 	}
 	
 	public void fillComboBox(JComboBox<WrapperLookAndFeelInfo> comboBox){
@@ -40,9 +55,9 @@ public class LookAndFeelUtil {
 		private LookAndFeelInfo info;
 		private String name;
 		
-		public WrapperLookAndFeelInfo(LookAndFeelInfo info, String name) {
+		public WrapperLookAndFeelInfo(LookAndFeelInfo info) {
 			this.info = info;
-			this.name = name;
+			this.name = info.getName();
 		}
 
 		public LookAndFeelInfo getInfo() {
@@ -90,7 +105,10 @@ public class LookAndFeelUtil {
 	}
 
 	public static void setLookAndFeel() throws Exception{
-		Configuracao conf = ConfiguracaoManager.getConfiguracao();
-		UIManager.setLookAndFeel(conf.getAparenciaPreferida());
+		try{
+			Configuracao conf = ConfiguracaoManager.getConfiguracao();
+			UIManager.setLookAndFeel(conf.getAparenciaPreferida());
+		}catch (Exception e) {
+		}
 	}
 }

@@ -35,7 +35,7 @@ public class LookAndFeelActionListener implements ActionListener {
 			
 			Configuracao configuracao = ConfiguracaoManager.getConfiguracao();
 			configuracao.setAparenciaPreferida(lfClassName);
-			ConfiguracaoManager.update();
+			ConfiguracaoManager.update(configuracao);
 			
 			SwingUtilities.updateComponentTreeUI(Contexto.getMainWindow());
 			Contexto.getMainWindow().validate();
