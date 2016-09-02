@@ -64,7 +64,7 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 			throw new ExecucaoException("Falha na assinatura do documento \n" + e.getMessage(), e, true); 
 		}finally {
 			Contexto.getMainWindow().setEnabled(true);
-			progressDialog.dispose(2000);
+			progressDialog.dispose(750);
 		}
 	}
 	
