@@ -7,8 +7,10 @@ import java.security.PrivateKey;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,6 +37,7 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.Store;
 
 import br.com.assinador.bc.exception.AssinaturaInvalidaException;
+import br.com.assinador.bc.exception.TokenException;
 import br.com.assinador.leitor.LeitorKeyStore;
 import br.com.assinador.leitor.LeitorKeyStoreFactory;
 
@@ -45,6 +48,7 @@ public class AssinaturaDigitalService {
 	private String senha = "123456";
 	private PrivateKey privateKey;
 	private LeitorKeyStore leitorKeyStore;
+	private String aliasSelecionado;
 
 	public AssinaturaDigitalService() {
 		this.leitorKeyStore = LeitorKeyStoreFactory.getLeitorKeyStore();
@@ -54,6 +58,21 @@ public class AssinaturaDigitalService {
 	public AssinaturaDigitalService(String senha) {
 		this();
 		this.senha = senha;
+	}
+	
+	public List<String> getConnectedDevices(){
+		try {
+			KeyStore keystore = leitorKeyStore.getKeystore(null);
+			Enumeration<String> aliases = keystore.aliases();
+			List<String> devices = new ArrayList<>();
+			
+			while(aliases.hasMoreElements())
+				devices.add(aliases.nextElement());
+			
+			return devices;
+		} catch (GeneralSecurityException | IOException e) {
+			throw new TokenException("Falha na leitura do(s) dispositivo(s) usb");
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes" })
@@ -131,8 +150,7 @@ public class AssinaturaDigitalService {
 	
 	private X509CertificateHolder obterCertificado() throws GeneralSecurityException, IOException {
 		KeyStore keystore = leitorKeyStore.getKeystore(this.senha.toCharArray());
-		String alias = keystore.aliases().nextElement();
-		java.security.cert.Certificate c = keystore.getCertificate(alias);
+		java.security.cert.Certificate c = keystore.getCertificate(aliasSelecionado);
 		return new X509CertificateHolder(c.getEncoded());
 	}
 
@@ -145,8 +163,11 @@ public class AssinaturaDigitalService {
 
 	private PrivateKey carregarPrivateKey() throws GeneralSecurityException, IOException {
 		KeyStore keystore = leitorKeyStore.getKeystore(this.senha.toCharArray());
-		String alias = keystore.aliases().nextElement();
-		return (PrivateKey) keystore.getKey(alias, this.senha.toCharArray());
+		return (PrivateKey) keystore.getKey(aliasSelecionado, this.senha.toCharArray());
+	}
+
+	public void setAliasSelecionado(String aliasSelecionado) {
+		this.aliasSelecionado = aliasSelecionado;
 	}
 
 }

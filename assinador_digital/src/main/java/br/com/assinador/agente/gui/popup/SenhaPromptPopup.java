@@ -49,7 +49,7 @@ public class SenhaPromptPopup extends Prompter {
 		return senhaDigitada;
 	}
 	
-	public boolean isAcaoCanceladaO(){
+	public boolean isAcaoCancelada(){
 		return acaoCancelada;
 	}
 }

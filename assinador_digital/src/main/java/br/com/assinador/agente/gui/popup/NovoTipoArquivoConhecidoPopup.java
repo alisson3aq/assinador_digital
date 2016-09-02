@@ -35,7 +35,7 @@ public class NovoTipoArquivoConhecidoPopup extends Prompter {
 		return tiposDigitados;
 	}
 	
-	public boolean isOk() {
+	public boolean isAcaoCancelada() {
 		return ok;
 	}
 }

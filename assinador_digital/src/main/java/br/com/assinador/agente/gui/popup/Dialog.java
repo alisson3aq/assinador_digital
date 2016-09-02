@@ -21,6 +21,13 @@ public abstract class Dialog extends JDialog {
 	}
 	
 	public void dispose(){
+		dispose(0);
+	}
+	
+	public void dispose(long delay){
+		try{
+			Thread.sleep(delay);
+		}catch (Exception e){}
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setVisible(false);
 		super.dispose();

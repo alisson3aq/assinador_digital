@@ -36,7 +36,7 @@ public class AddRemoveTipoActionListener implements ActionListener {
 		NovoTipoArquivoConhecidoPopup popup = new NovoTipoArquivoConhecidoPopup(controller.getView());
 		popup.open();
 		
-		if (popup.isOk()){
+		if (popup.isAcaoCancelada()){
 			String tiposDigitados = popup.getTiposDigitados();
 			String[] tipos = tiposDigitados.split("[,\\s+|.,]+");
 			if (tipos.length != 0 && !(tipos.length == 1 && tipos[0].equals(""))){

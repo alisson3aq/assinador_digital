@@ -13,16 +13,18 @@ public class LeitorKeyStoreMS implements LeitorKeyStore {
 
 	protected static final String MS_PROVIDER = "SunMSCAPI";
 	protected static final String MS_TYPE = "Windows-MY";
+	protected KeyStore ks;
 //	protected static final String MS_ERROR_LOAD = "Error on load a KeyStore from SunMSCAPI";
 
 	@Override
 	public KeyStore getKeystore(char[] password)
 			throws GeneralSecurityException, IOException {
 		try {
-			KeyStore result = KeyStore.getInstance(MS_TYPE, MS_PROVIDER);
-			result.load(null, null);
-			//fixAliases(result);
-			return result;
+			if (ks == null){
+				ks = KeyStore.getInstance(MS_TYPE, MS_PROVIDER);
+				ks.load(null, null);
+			}
+			return ks;
 		} catch (Exception e) {
 			throw new LeitorKeyStoreException("Erro tentando ler KeyStore a partir de SunMSCAPI: " + e.getMessage(), e);
 		}

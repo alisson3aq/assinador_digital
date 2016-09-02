@@ -41,4 +41,6 @@ public abstract class Prompter extends JPanel {
 		revalidate();
 		repaint();
 	}
+	
+	public abstract boolean isAcaoCancelada();
 }
