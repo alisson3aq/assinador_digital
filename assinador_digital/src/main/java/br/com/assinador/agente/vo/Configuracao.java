@@ -1,4 +1,4 @@
-package br.com.assinador.agente.config;
+package br.com.assinador.agente.vo;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -8,8 +8,8 @@ import java.util.Set;
 
 import javax.swing.UIManager;
 
-import br.com.assinador.agente.gui.panel.conf.converter.AparenciaConverter;
 import br.com.assinador.agente.io.FileExtension;
+import br.com.assinador.agente.vo.converter.AparenciaConverter;
 import br.com.mvp.view.ModelCollector;
 import br.com.mvp.view.annotation.Combo;
 import br.com.mvp.view.annotation.Model;

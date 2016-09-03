@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import br.com.assinador.agente.Constantes;
 import br.com.assinador.agente.Contexto;
-import br.com.assinador.agente.gui.panel.assinador.AssinadorComponentsVO;
 import br.com.assinador.agente.gui.panel.assinador.tarefa.AssinadorDocumentoAsync;
 import br.com.assinador.agente.gui.panel.assinador.tarefa.ExcluirArquivosOriginaisAsync;
 import br.com.assinador.agente.gui.popup.ProgressDialog;
@@ -14,14 +12,15 @@ import br.com.assinador.agente.multithread.Executor;
 import br.com.assinador.agente.multithread.Protocolo;
 import br.com.assinador.agente.multithread.Tarefa;
 import br.com.assinador.agente.notification.Notificador;
+import br.com.assinador.agente.vo.AssinadorVO;
 
 public class AssinadorDocumentoActionListener implements ActionListener{
 
 	private Notificador notificador = Contexto.getNotificador();
-	private AssinadorComponentsVO componentes;
+	private AssinadorVO assinadorVO;
 	
-	public AssinadorDocumentoActionListener(AssinadorComponentsVO componentes) {
-		this.componentes = componentes;
+	public AssinadorDocumentoActionListener(AssinadorVO assinadorVO) {
+		this.assinadorVO = assinadorVO;
 	}
 	
 	@Override
@@ -50,7 +49,7 @@ public class AssinadorDocumentoActionListener implements ActionListener{
 	
 	private void processar(String senha){
 		
-		File destino = Contexto.getAtributo(Constantes.DIRETORIO_ASSINATURA_DESTINO_SELECIONADO);
+		File destino = assinadorVO.getDestino();
 		if (destino == null || !destino.exists()){
 			notificador.notificarErro(Contexto.getMainWindow(), "O diretório de destino não existe", "Assinador Digital");
 			return;
@@ -58,11 +57,10 @@ public class AssinadorDocumentoActionListener implements ActionListener{
 		
 		Executor executor = Contexto.getExecutor();
 		
-		Tarefa<Void> at = new AssinadorDocumentoAsync(senha, new ProgressDialog("Progresso Assinatura"));
+		Tarefa<Void> at = new AssinadorDocumentoAsync(senha, assinadorVO.getDocumentos(), new ProgressDialog("Progresso Assinatura"));
 		Protocolo<Void> protocoloAssinatura = executor.executarTarefa(at);
 		
-		boolean removerArquivosOriginais = componentes.getChckbxRemoverArquivosOriginais().isSelected();
-		if (removerArquivosOriginais){
+		if (assinadorVO.isRemoverDocumentos()){
 			Tarefa<Void> deleteFiles = new ExcluirArquivosOriginaisAsync(protocoloAssinatura);
 			executor.executarTarefa(deleteFiles);
 		}

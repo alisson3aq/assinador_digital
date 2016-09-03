@@ -13,9 +13,9 @@ import br.com.assinador.agente.Constantes;
 import br.com.assinador.agente.Contexto;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.FileChooser;
-import br.com.assinador.agente.gui.panel.JListUtil;
 import br.com.assinador.agente.gui.panel.documento.ExtratorComponentsVO;
 import br.com.assinador.agente.io.FileExtension;
+import br.com.mvp.util.JListUtil;
 
 public class SelecaoDocumentoActionListener implements ActionListener {
 	

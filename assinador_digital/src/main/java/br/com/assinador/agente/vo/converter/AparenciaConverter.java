@@ -1,4 +1,4 @@
-package br.com.assinador.agente.gui.panel.conf.converter;
+package br.com.assinador.agente.vo.converter;
 
 import br.com.assinador.agente.gui.LookAndFeelUtil;
 import br.com.assinador.agente.gui.LookAndFeelUtil.WrapperLookAndFeelInfo;

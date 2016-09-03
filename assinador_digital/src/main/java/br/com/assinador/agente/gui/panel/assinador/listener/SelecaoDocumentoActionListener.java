@@ -9,20 +9,18 @@ import java.util.Set;
 
 import javax.swing.JList;
 
-import br.com.assinador.agente.Constantes;
 import br.com.assinador.agente.Contexto;
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.FileChooser;
-import br.com.assinador.agente.gui.panel.JListUtil;
-import br.com.assinador.agente.gui.panel.assinador.AssinadorComponentsVO;
+import br.com.assinador.agente.vo.Configuracao;
+import br.com.mvp.util.JListUtil;
 
 public class SelecaoDocumentoActionListener implements ActionListener {
 	
-	private AssinadorComponentsVO componentes;
-
-	public SelecaoDocumentoActionListener(AssinadorComponentsVO componentes) {
-		this.componentes = componentes;
+	private JList<File> jListDocumentosSelecionados;
+	
+	public SelecaoDocumentoActionListener(JList<File> jListDocumentosSelecionados) {
+		this.jListDocumentosSelecionados = jListDocumentosSelecionados;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -37,13 +35,10 @@ public class SelecaoDocumentoActionListener implements ActionListener {
 								.choosableExtensions("Tipos Conhecidos", configuracao.getTiposConhecidos(), true)
 								.getSelectedFiles(Contexto.getMainWindow());
 		if (selectedFiles != null){
-			JList<File> listDocSelecionados = componentes.getjListDocSelecionados();
-			JListUtil<File> listUtil = new JListUtil<>(listDocSelecionados);
+			JListUtil<File> listUtil = new JListUtil<>(jListDocumentosSelecionados);
 			
 			Set<File> arquivosSelecionados = new LinkedHashSet<>(Arrays.asList(selectedFiles));
 			listUtil.addValues(arquivosSelecionados);
-			
-			Contexto.putAtributo(Constantes.DOCUMENTOS_ASSINATURA_SELECIONADOS, listUtil.getValues());
 		}
 	}
 	

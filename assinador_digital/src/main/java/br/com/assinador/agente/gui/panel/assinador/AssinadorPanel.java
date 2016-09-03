@@ -7,30 +7,37 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import br.com.assinador.agente.Constantes;
-import br.com.assinador.agente.Contexto;
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.panel.assinador.listener.AssinadorDocumentoActionListener;
+import br.com.assinador.agente.vo.AssinadorVO;
+import br.com.assinador.agente.vo.Configuracao;
+import br.com.mvp.Controller;
+import br.com.mvp.view.MVPPanel;
+import br.com.mvp.view.annotation.Component;
+import br.com.mvp.view.annotation.View;
 
-public class AssinadorPanel extends JPanel {
+@View
+public class AssinadorPanel extends MVPPanel<AssinadorPanel, AssinadorVO> {
 
 	private static final long serialVersionUID = -3129004503863223648L;
 
-	public AssinadorComponentsVO componentsVO = new AssinadorComponentsVO();
+	@Component
+	private JCheckBox chckbxRemoverArquivosOriginais;
+	private DestinoLowerPanel destinoLowerPanel;
+	private OrigemUpperPanel upperPanel;
 	
-	public AssinadorPanel() {
+	public AssinadorPanel() throws Exception{
+		super(AssinadorVO.class);
 		
 		setBounds(100, 100, 610, 440);
 		setLocation(10, 11);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		OrigemUpperPanel upperPanel = new OrigemUpperPanel(componentsVO);
+		upperPanel = new OrigemUpperPanel();
 		upperPanel.setBorder(new TitledBorder(null, "Origem", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout_1 = (GroupLayout) upperPanel.getLayout();
 		groupLayout_1.setAutoCreateGaps(true);
@@ -39,9 +46,9 @@ public class AssinadorPanel extends JPanel {
 		JButton btnAssinar = new JButton("Assinar");
 		btnAssinar.setIcon(new ImageIcon(AssinadorPanel.class.getResource("/br/com/assinador/agente/gui/icon/sign_icon.png")));
 		
-		JCheckBox chckbxRemoverArquivosOriginais = new JCheckBox("Remover arquivos originais após o término");
+		chckbxRemoverArquivosOriginais = new JCheckBox("Remover arquivos originais após o término");
 		
-		DestinoLowerPanel destinoLowerPanel = new DestinoLowerPanel(componentsVO);
+		destinoLowerPanel = new DestinoLowerPanel();
 		destinoLowerPanel.setBorder(new TitledBorder(null, "Destino", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -69,23 +76,20 @@ public class AssinadorPanel extends JPanel {
 		);
 		setLayout(groupLayout);
 		
-		
-		componentsVO.setBtnAssinar(btnAssinar);
-		componentsVO.setChckbxRemoverArquivosOriginais(chckbxRemoverArquivosOriginais);
-		
-		btnAssinar.addActionListener(new AssinadorDocumentoActionListener(componentsVO));
-		
+		btnAssinar.addActionListener(new AssinadorDocumentoActionListener(getController().getModel()));
 		setConfigValues();
 	}
 	
-	private void setConfigValues() {
-		Configuracao conf = ConfiguracaoManager.getConfiguracao();
-		File destDirConf = new File(conf.getDiretorioDocumentosAssinadosPreferido());
-		componentsVO.getTxtDestino().setText(destDirConf.getAbsolutePath());
-		Contexto.putAtributo(Constantes.DIRETORIO_ASSINATURA_DESTINO_SELECIONADO, destDirConf);
-	}
-
-	public AssinadorComponentsVO getComponentsVO() {
-		return componentsVO;
+	private void setConfigValues(){
+		try{
+			Controller<AssinadorPanel, AssinadorVO> controller = getController();
+			Configuracao conf = ConfiguracaoManager.getConfiguracao();
+			
+			AssinadorVO assinadorVO = controller.getModel();
+			assinadorVO.setDestino(new File(conf.getDiretorioDocumentosAssinadosPreferido()));
+			
+			controller.updateView();
+		}catch (Exception e) {
+		}
 	}
 }

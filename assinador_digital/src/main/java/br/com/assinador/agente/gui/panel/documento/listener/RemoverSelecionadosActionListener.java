@@ -7,8 +7,8 @@ import java.util.Set;
 
 import javax.swing.JList;
 
-import br.com.assinador.agente.gui.panel.JListUtil;
 import br.com.assinador.agente.gui.panel.documento.ExtratorComponentsVO;
+import br.com.mvp.util.JListUtil;
 
 public class RemoverSelecionadosActionListener implements ActionListener {
 

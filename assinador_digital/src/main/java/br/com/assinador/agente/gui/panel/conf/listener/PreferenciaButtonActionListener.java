@@ -7,10 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.LookAndFeelUtil;
 import br.com.assinador.agente.gui.panel.conf.PreferenciasPanel;
+import br.com.assinador.agente.vo.Configuracao;
 import br.com.mvp.Controller;
 
 public class PreferenciaButtonActionListener implements ActionListener{

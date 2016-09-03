@@ -4,18 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import br.com.assinador.agente.Constantes;
+import javax.swing.JTextField;
+
 import br.com.assinador.agente.Contexto;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.FileChooser;
-import br.com.assinador.agente.gui.panel.assinador.AssinadorComponentsVO;
 
 public class SelecaoDiretorioDestinoActionListener implements ActionListener {
 
-	private AssinadorComponentsVO componentsVO;
+	private JTextField txtDestino;
 
-	public SelecaoDiretorioDestinoActionListener(AssinadorComponentsVO componentsVO) {
-		this.componentsVO = componentsVO;
+	public SelecaoDiretorioDestinoActionListener(JTextField txtDestino) {
+		this.txtDestino = txtDestino;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -27,8 +27,7 @@ public class SelecaoDiretorioDestinoActionListener implements ActionListener {
 								.directoriesOnly()
 								.getSelectedFile(Contexto.getMainWindow());
 		if (selectedFile != null) {
-			componentsVO.getTxtDestino().setText(selectedFile.getAbsolutePath());
-			Contexto.putAtributo(Constantes.DIRETORIO_ASSINATURA_DESTINO_SELECIONADO, selectedFile);
+			txtDestino.setText(selectedFile.getAbsolutePath());
 		}
 	}
 

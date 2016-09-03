@@ -7,11 +7,11 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-import br.com.assinador.agente.config.Configuracao;
-import br.com.assinador.agente.gui.panel.JListUtil;
 import br.com.assinador.agente.gui.panel.conf.PreferenciasPanel;
 import br.com.assinador.agente.gui.popup.NovoTipoArquivoConhecidoPopup;
+import br.com.assinador.agente.vo.Configuracao;
 import br.com.mvp.Controller;
+import br.com.mvp.util.JListUtil;
 
 public class AddRemoveTipoActionListener implements ActionListener {
 

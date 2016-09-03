@@ -3,6 +3,7 @@ package br.com.assinador.agente.config;
 import java.io.File;
 
 import br.com.assinador.agente.io.FileHandler;
+import br.com.assinador.agente.vo.Configuracao;
 import br.com.mvp.instrument.reflection.ReflectionUtils;
 
 public class ConfiguracaoManager {

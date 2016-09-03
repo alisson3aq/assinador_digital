@@ -11,24 +11,26 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.com.assinador.agente.gui.panel.assinador.listener.SelecaoDiretorioDestinoActionListener;
+import br.com.mvp.view.annotation.Component;
+import br.com.mvp.view.annotation.View;
 
+@View
 class DestinoLowerPanel extends JPanel {
 
 	private static final long serialVersionUID = -8885728689572730475L;
+	@Component
+	private JTextField txtDestino;
 
-	public DestinoLowerPanel(AssinadorComponentsVO componentsVO) {
+	public DestinoLowerPanel() {
 		
 		JButton btnSelecionarDestino = new JButton("Destino");
 		btnSelecionarDestino.setIcon(new ImageIcon(DestinoLowerPanel.class.getResource("/br/com/assinador/agente/gui/icon/folder.png")));
 		
-		componentsVO.setBtnSelecionarDestino(btnSelecionarDestino);;
-		
-		JTextField txtDestino = new JTextField();
+		txtDestino = new JTextField();
 		txtDestino.setBackground(Color.WHITE);
 		txtDestino.setEditable(false);
 		txtDestino.setColumns(10);
 		
-		componentsVO.setTxtDestino(txtDestino);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -50,9 +52,6 @@ class DestinoLowerPanel extends JPanel {
 		);
 		setLayout(groupLayout);
 	
-		componentsVO.setBtnSelecionarDestino(btnSelecionarDestino);
-		componentsVO.setTxtDestino(txtDestino);
-		
-		btnSelecionarDestino.addActionListener(new SelecaoDiretorioDestinoActionListener(componentsVO));
+		btnSelecionarDestino.addActionListener(new SelecaoDiretorioDestinoActionListener(txtDestino));
 	}
 }

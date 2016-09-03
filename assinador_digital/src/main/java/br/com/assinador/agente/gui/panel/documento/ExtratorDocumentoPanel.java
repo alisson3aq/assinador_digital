@@ -13,9 +13,9 @@ import javax.swing.border.TitledBorder;
 
 import br.com.assinador.agente.Constantes;
 import br.com.assinador.agente.Contexto;
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.panel.documento.listener.ExtratorDocumentoActionListener;
+import br.com.assinador.agente.vo.Configuracao;
 
 public class ExtratorDocumentoPanel extends JPanel {
 

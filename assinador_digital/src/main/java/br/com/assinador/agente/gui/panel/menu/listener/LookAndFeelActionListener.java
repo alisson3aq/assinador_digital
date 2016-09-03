@@ -12,8 +12,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import br.com.assinador.agente.Contexto;
 import br.com.assinador.agente.Logger;
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
+import br.com.assinador.agente.vo.Configuracao;
 
 public class LookAndFeelActionListener implements ActionListener {
 	

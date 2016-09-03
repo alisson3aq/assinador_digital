@@ -16,12 +16,12 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.LookAndFeelUtil;
 import br.com.assinador.agente.gui.panel.conf.listener.AddRemoveTipoActionListener;
 import br.com.assinador.agente.gui.panel.conf.listener.PreferenciaButtonActionListener;
 import br.com.assinador.agente.gui.panel.conf.listener.SelecionarDiretorioActionListener;
+import br.com.assinador.agente.vo.Configuracao;
 import br.com.mvp.view.MVPPanel;
 import br.com.mvp.view.annotation.Component;
 import br.com.mvp.view.annotation.View;

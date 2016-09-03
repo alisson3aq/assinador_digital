@@ -9,8 +9,8 @@ import javax.swing.JComboBox;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import br.com.assinador.agente.config.Configuracao;
 import br.com.assinador.agente.config.ConfiguracaoManager;
+import br.com.assinador.agente.vo.Configuracao;
 
 public class LookAndFeelUtil {
 

@@ -17,12 +17,17 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import br.com.assinador.agente.gui.panel.FileListCellRenderer;
 import br.com.assinador.agente.gui.panel.assinador.listener.RemoverSelecionadosActionListener;
 import br.com.assinador.agente.gui.panel.assinador.listener.SelecaoDocumentoActionListener;
+import br.com.mvp.view.annotation.Component;
+import br.com.mvp.view.annotation.View;
 
+@View
 class OrigemUpperPanel extends JPanel {
 	
 	private static final long serialVersionUID = -5540154856994635443L;
+	@Component
+	private JList<File> jListDocumentosSelecionados;
 	
-	public OrigemUpperPanel(AssinadorComponentsVO componentsVO) {
+	public OrigemUpperPanel() {
 		
 		JSeparator separator = new JSeparator();
 		JLabel lblDocumentos = new JLabel("Documentos");
@@ -71,17 +76,13 @@ class OrigemUpperPanel extends JPanel {
 		);
 		
 		DefaultListModel<File> fileListModel = new DefaultListModel<>();;
-		JList<File> jListDocumentosSelecionados = new JList<File>();
+		jListDocumentosSelecionados = new JList<File>();
 		jListDocumentosSelecionados.setModel(fileListModel);
 		jListDocumentosSelecionados.setCellRenderer(new FileListCellRenderer());
 		scrollPane.setViewportView(jListDocumentosSelecionados);
 		setLayout(groupLayout);
 		
-		componentsVO.setBtnAdicionar(btnAdicionar);
-		componentsVO.setBtnRemover(btnRemover);
-		componentsVO.setjListDocSelecionados(jListDocumentosSelecionados);
-
-		btnAdicionar.addActionListener(new SelecaoDocumentoActionListener(componentsVO));
-		btnRemover.addActionListener(new RemoverSelecionadosActionListener(componentsVO));
+		btnAdicionar.addActionListener(new SelecaoDocumentoActionListener(jListDocumentosSelecionados));
+		btnRemover.addActionListener(new RemoverSelecionadosActionListener(jListDocumentosSelecionados));
 	}
 }

@@ -1,9 +1,9 @@
 package br.com.assinador.agente.gui.panel.assinador.tarefa;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import br.com.assinador.agente.Constantes;
 import br.com.assinador.agente.Contexto;
@@ -25,10 +25,12 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 	private String senha; 
 	private Logger logger = Contexto.getLogger();
 	private ProgressDialog progressDialog;
+	private Collection<File> arquivos;
 	
-	public AssinadorDocumentoAsync(String senha, ProgressDialog progressDialog) {
+	public AssinadorDocumentoAsync(String senha, Collection<File> arquivos, ProgressDialog progressDialog) {
 		super(TipoTarefa.ASSINATURA_DOCUMENTO);
 		this.senha = senha;
+		this.arquivos = arquivos;
 		this.progressDialog = progressDialog;
 	}
 
@@ -42,7 +44,6 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 			Contexto.getMainWindow().setEnabled(false);
 			
 			FileHandler fh = new FileHandler();
-			Set<File> arquivos = Contexto.getAtributo(Constantes.DOCUMENTOS_ASSINATURA_SELECIONADOS);
 			
 			progressDialog.setLimites(0, arquivos.size());
 			AssinaturaDigitalService assinador = new AssinaturaDigitalService(senha);
@@ -61,7 +62,8 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 			throw new ExecucaoException(e.getMessage(), e, true);
 		}catch (Exception e) {
 			logger.log("Falha na assinatura", e);
-			throw new ExecucaoException("Falha na assinatura do documento \n" + e.getMessage(), e, true); 
+			throw new ExecucaoException("Falha na assinatura do documento \n " +
+					"Verifique se o dispositivo está conectado ou se o driver correto está instalado.", true); 
 		}finally {
 			Contexto.getMainWindow().setEnabled(true);
 			progressDialog.dispose(750);
@@ -70,9 +72,14 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 	
 	private String escolherDispositivo(AssinaturaDigitalService assinador) {
 		List<String> connectedDevices = assinador.getConnectedDevices();
-		SelecaoDispositivoPrompter dispositivo = new SelecaoDispositivoPrompter(connectedDevices);
-		dispositivo.open();
-		return dispositivo.getDispositivoSelecionado();			
+		if (connectedDevices.isEmpty()){
+			Contexto.getNotificador().notificarAlerta("Nenhum dispositivo encontrado", "Seleção de dispositivo");
+			return null;
+		}else{
+			SelecaoDispositivoPrompter dispositivo = new SelecaoDispositivoPrompter(connectedDevices);
+			dispositivo.open();
+			return dispositivo.getDispositivoSelecionado();			
+		}
 	}
 
 	private void assinar(FileHandler fh, File arquivo, AssinaturaDigitalService assinador) throws Exception{
