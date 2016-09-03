@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import br.com.assinador.agente.Contexto;
+import br.com.assinador.agente.gui.panel.assinador.AssinadorPanel;
 import br.com.assinador.agente.gui.panel.assinador.tarefa.AssinadorDocumentoAsync;
 import br.com.assinador.agente.gui.panel.assinador.tarefa.ExcluirArquivosOriginaisAsync;
 import br.com.assinador.agente.gui.popup.ProgressDialog;
@@ -13,14 +14,15 @@ import br.com.assinador.agente.multithread.Protocolo;
 import br.com.assinador.agente.multithread.Tarefa;
 import br.com.assinador.agente.notification.Notificador;
 import br.com.assinador.agente.vo.AssinadorVO;
+import br.com.mvp.Controller;
 
 public class AssinadorDocumentoActionListener implements ActionListener{
 
 	private Notificador notificador = Contexto.getNotificador();
-	private AssinadorVO assinadorVO;
+	private Controller<AssinadorPanel, AssinadorVO> controller;
 	
-	public AssinadorDocumentoActionListener(AssinadorVO assinadorVO) {
-		this.assinadorVO = assinadorVO;
+	public AssinadorDocumentoActionListener(Controller<AssinadorPanel, AssinadorVO> controller) {
+		this.controller = controller;
 	}
 	
 	@Override
@@ -49,6 +51,7 @@ public class AssinadorDocumentoActionListener implements ActionListener{
 	
 	private void processar(String senha){
 		
+		AssinadorVO assinadorVO = controller.getModel();
 		File destino = assinadorVO.getDestino();
 		if (destino == null || !destino.exists()){
 			notificador.notificarErro(Contexto.getMainWindow(), "O diretório de destino não existe", "Assinador Digital");

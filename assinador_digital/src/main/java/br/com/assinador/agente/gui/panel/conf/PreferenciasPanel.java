@@ -183,6 +183,12 @@ public class PreferenciasPanel extends MVPPanel<PreferenciasPanel, Configuracao>
 		btnAdicionarTipo.addActionListener(addRemoveAL);
 		btnRemoverTipo.addActionListener(addRemoveAL);
 		
-		loadModel(ConfiguracaoManager.getConfiguracao());
+		invokeLater(() -> {
+			try{
+				loadModel(ConfiguracaoManager.getConfiguracao());
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

@@ -76,20 +76,19 @@ public class AssinadorPanel extends MVPPanel<AssinadorPanel, AssinadorVO> {
 		);
 		setLayout(groupLayout);
 		
-		btnAssinar.addActionListener(new AssinadorDocumentoActionListener(getController().getModel()));
-		setConfigValues();
-	}
-	
-	private void setConfigValues(){
-		try{
-			Controller<AssinadorPanel, AssinadorVO> controller = getController();
-			Configuracao conf = ConfiguracaoManager.getConfiguracao();
-			
-			AssinadorVO assinadorVO = controller.getModel();
-			assinadorVO.setDestino(new File(conf.getDiretorioDocumentosAssinadosPreferido()));
-			
-			controller.updateView();
-		}catch (Exception e) {
-		}
+		btnAssinar.addActionListener(new AssinadorDocumentoActionListener(getController()));
+		
+		invokeLater(() -> {
+			try{
+				Controller<AssinadorPanel, AssinadorVO> controller = getController();
+				Configuracao conf = ConfiguracaoManager.getConfiguracao();
+				
+				AssinadorVO assinadorVO = controller.getModel();
+				assinadorVO.setDestino(new File(conf.getDiretorioDocumentosAssinadosPreferido()));
+				
+				updateView();
+			}catch (Exception e) {
+			}
+		});
 	}
 }
