@@ -35,11 +35,6 @@ public class ProgressDialog extends Dialog{
 	
 	public void progredir(String textoProgresso, int progresso){
 		progressBar.setString(textoProgresso);
-
-		int novoProgresso = progressBar.getValue() + progresso;
-		if (novoProgresso == progressBar.getMaximum())
-			progressBar.setString("Finalizado!");
-		
 		progredir(progresso);
 	}
 	

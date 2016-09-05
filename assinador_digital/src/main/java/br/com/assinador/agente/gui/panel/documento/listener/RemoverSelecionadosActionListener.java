@@ -7,22 +7,20 @@ import java.util.Set;
 
 import javax.swing.JList;
 
-import br.com.assinador.agente.gui.panel.documento.ExtratorComponentsVO;
 import br.com.mvp.util.JListUtil;
 
 public class RemoverSelecionadosActionListener implements ActionListener {
 
 	
-	private ExtratorComponentsVO componentesVO;
+	private JList<File> jListDocumentosSelecionados;
 
-	public RemoverSelecionadosActionListener(ExtratorComponentsVO componentesVO) {
-		this.componentesVO = componentesVO;
+	public RemoverSelecionadosActionListener(JList<File> jListDocumentosSelecionados) {
+		this.jListDocumentosSelecionados = jListDocumentosSelecionados;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JList<File> listDocSelecionados = componentesVO.getjListDocSelecionados();
-		JListUtil<File> listUtil = new JListUtil<>(listDocSelecionados);
+		JListUtil<File> listUtil = new JListUtil<>(jListDocumentosSelecionados);
 		
 		Set<File> selectedElements = listUtil.getSelectedElements();
 		listUtil.removeValues(selectedElements);

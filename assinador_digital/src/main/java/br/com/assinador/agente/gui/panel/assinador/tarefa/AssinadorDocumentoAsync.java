@@ -45,7 +45,7 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 			
 			FileHandler fh = new FileHandler();
 			
-			progressDialog.setLimites(0, arquivos.size());
+			progressDialog.setLimites(0, arquivos.size() + 1);
 			AssinaturaDigitalService assinador = new AssinaturaDigitalService(senha);
 			
 			String dispositivo = escolherDispositivo(assinador);
@@ -55,6 +55,7 @@ public class AssinadorDocumentoAsync extends Tarefa<Void>{
 					assinar(fh, f, assinador);
 					progressDialog.progredir(f.getName() + " ...", 1);
 				}
+				progressDialog.progredir("Finalizado.", 1);
 			}
 			
 		}catch(AssinaturaInvalidaException | TokenException e){

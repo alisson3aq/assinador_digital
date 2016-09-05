@@ -6,39 +6,42 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import br.com.assinador.agente.Constantes;
-import br.com.assinador.agente.Contexto;
 import br.com.assinador.agente.config.ConfiguracaoManager;
 import br.com.assinador.agente.gui.panel.documento.listener.ExtratorDocumentoActionListener;
+import br.com.assinador.agente.vo.AssinadorVO;
 import br.com.assinador.agente.vo.Configuracao;
+import br.com.mvp.Controller;
+import br.com.mvp.view.MVPPanel;
+import br.com.mvp.view.annotation.View;
 
-public class ExtratorDocumentoPanel extends JPanel {
+@View
+public class ExtratorDocumentoPanel extends MVPPanel<ExtratorDocumentoPanel, AssinadorVO> {
 
 	private static final long serialVersionUID = -3129004503863223648L;
+	private OrigemUpperPanel upperPanel;
+	private DestinoLowerPanel destinoLowerPanel;
 
-	public ExtratorComponentsVO componentsVO = new ExtratorComponentsVO();
-	
 	public ExtratorDocumentoPanel() {
+		super(AssinadorVO.class);
 		
 		setBounds(100, 100, 610, 424);
 		setLocation(10, 11);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		OrigemUpperPanel upperPanel = new OrigemUpperPanel(componentsVO);
+		upperPanel = new OrigemUpperPanel();
 		upperPanel.setBorder(new TitledBorder(null, "Origem", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GroupLayout groupLayout_1 = (GroupLayout) upperPanel.getLayout();
-		groupLayout_1.setAutoCreateGaps(true);
-		groupLayout_1.setAutoCreateContainerGaps(true);
+		GroupLayout gl_upperPanel = (GroupLayout) upperPanel.getLayout();
+		gl_upperPanel.setAutoCreateGaps(true);
+		gl_upperPanel.setAutoCreateContainerGaps(true);
 		
 		JButton btnExtrair = new JButton("Extrair documentos");
 		btnExtrair.setIcon(new ImageIcon(ExtratorDocumentoPanel.class.getResource("/br/com/assinador/agente/gui/icon/extract.png")));
 		
-		DestinoLowerPanel destinoLowerPanel = new DestinoLowerPanel(componentsVO);
+		destinoLowerPanel = new DestinoLowerPanel();
 		destinoLowerPanel.setBorder(new TitledBorder(null, "Destino", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -61,21 +64,19 @@ public class ExtratorDocumentoPanel extends JPanel {
 		);
 		setLayout(groupLayout);
 		
+		btnExtrair.addActionListener(new ExtratorDocumentoActionListener(getController()));
 		
-		componentsVO.setBtnExtrair(btnExtrair);
-		
-		btnExtrair.addActionListener(new ExtratorDocumentoActionListener());
-		setConfigValues();
-	}
-	
-	private void setConfigValues() {
-		Configuracao conf = ConfiguracaoManager.getConfiguracao();
-		File destDirConf = new File(conf.getDiretorioDocumentosPreferido());
-		componentsVO.getTxtDestino().setText(destDirConf.getAbsolutePath());
-		Contexto.putAtributo(Constantes.DIRETORIO_EXTRACAO_DESTINO_SELECIONADO, destDirConf);
-	}
-	
-	public ExtratorComponentsVO getComponentsVO() {
-		return componentsVO;
+		invokeLater(() -> {
+			try{
+				Controller<ExtratorDocumentoPanel, AssinadorVO> controller = getController();
+				Configuracao conf = ConfiguracaoManager.getConfiguracao();
+				
+				AssinadorVO assinadorVO = controller.getModel();
+				assinadorVO.setDestino(new File(conf.getDiretorioDocumentosPreferido()));
+				
+				updateView();
+			}catch (Exception e) {
+			}
+		});
 	}
 }
